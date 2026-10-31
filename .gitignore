@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+# Noto Sans TC static fonts (SIL OFL) are large; place them locally in ipas_mock/fonts/
+ipas_mock/fonts/
