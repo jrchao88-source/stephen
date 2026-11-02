@@ -1,0 +1,294 @@
+<title>iPAS 必考百題模考</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+/* Layout: answer-sheet metaphor. Sticky exam bar on top; questions in one reading column; on wide screens an answer card (劃記卡) sits beside the column. */
+:root{
+  --bg:#EEF1F4; --paper:#FFFFFF; --ink:#16212C; --muted:#586574; --line:#D3DAE1; --soft:#F5F7F9;
+  --accent:#2B3F9C; --accent-soft:#E6EAF8; --mark:#C23B4F;
+  --ok:#17744A; --ok-soft:#E3F3EA; --bad:#B42330; --bad-soft:#FBE7E9; --warn:#8A5A00; --warn-soft:#FBF0DA;
+  --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F151B; --paper:#172029; --ink:#E5EAF0; --muted:#98A5B3; --line:#2B3744; --soft:#1C2631;
+  --accent:#8FA2FF; --accent-soft:#222C52; --mark:#F07A8B;
+  --ok:#5FD39A; --ok-soft:#14321F; --bad:#FF8A93; --bad-soft:#3A1A1E; --warn:#F2C26B; --warn-soft:#3A2D12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F151B; --paper:#172029; --ink:#E5EAF0; --muted:#98A5B3; --line:#2B3744; --soft:#1C2631;
+  --accent:#8FA2FF; --accent-soft:#222C52; --mark:#F07A8B;
+  --ok:#5FD39A; --ok-soft:#14321F; --bad:#FF8A93; --bad-soft:#3A1A1E; --warn:#F2C26B; --warn-soft:#3A2D12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.75;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* masthead */
+.mast{padding-block:28px 18px}
+.eyebrow{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.12em;color:var(--mark);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,4.4vw,40px);line-height:1.25;margin:.25em 0 .35em;text-wrap:balance}
+.lede{color:var(--muted);max-width:62ch;margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:14px;color:var(--muted)}
+.facts b{color:var(--ink);font-family:var(--f-mono);font-weight:600}
+
+/* sticky bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-block:10px}
+.tabs{display:flex;gap:4px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:3px}
+.tab{border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:7px;font-weight:500;font-size:15px}
+.tab[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.tab small{font-family:var(--f-mono);font-size:12px;margin-left:6px;color:var(--muted)}
+.prog{flex:1 1 160px;min-width:0;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+.prog .track{flex:1;height:6px;background:var(--soft);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.prog .fill{height:100%;background:var(--accent);width:0;transition:width .25s}
+.prog span{font-family:var(--f-mono);white-space:nowrap}
+.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:7px 14px;border-radius:8px;font-weight:500;font-size:15px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* confirm strip */
+.confirm{background:var(--warn-soft);color:var(--warn);border-bottom:1px solid var(--line)}
+.confirm .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-block:10px;font-size:15px}
+.confirm p{margin:0;flex:1 1 240px}
+
+/* main grid */
+.main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;padding-block:20px 60px}
+@media (min-width:1040px){.main{grid-template-columns:minmax(0,1fr) 280px}}
+.col{min-width:0;display:flex;flex-direction:column;gap:14px}
+
+/* result */
+.result{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:grid;gap:16px}
+.score-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 28px}
+.score{font-family:var(--f-display);font-weight:900;font-size:64px;line-height:1;color:var(--accent)}
+.score small{font-size:20px;color:var(--muted);font-weight:700;margin-left:4px}
+.stats{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:15px}
+.stats b{font-family:var(--f-mono)}
+.breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.bd{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--muted)}
+.bd b{display:block;font-family:var(--f-mono);font-size:20px;color:var(--ink)}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:999px;padding:4px 12px;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.note{font-size:13.5px;color:var(--muted);margin:0}
+
+/* question */
+.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;scroll-margin-top:90px}
+.q.is-ok{border-left:4px solid var(--ok)} .q.is-bad{border-left:4px solid var(--bad)} .q.is-skip{border-left:4px solid var(--warn)}
+.qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.qno{font-family:var(--f-mono);font-weight:600;color:var(--mark);font-size:15px}
+.tag{font-size:12px;padding:1px 8px;border-radius:5px;background:var(--soft);border:1px solid var(--line);color:var(--muted)}
+.tag.trap{color:var(--mark);border-color:var(--mark)}
+.verdict{margin-left:auto;font-size:13px;font-weight:700}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)} .verdict.skip{color:var(--warn)}
+.stem{margin:0 0 12px;white-space:pre-wrap}
+.opts{display:grid;gap:8px;border:0;margin:0;padding:0}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:var(--paper);transition:background .15s,border-color .15s}
+.opt:hover{border-color:var(--accent)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.bub{flex:0 0 auto;width:30px;height:22px;margin-top:3px;border:1.5px solid var(--mark);border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:12.5px;font-weight:600;color:var(--mark)}
+.opt input:checked + .bub{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.opt input:checked ~ .otext{font-weight:500}
+.opt:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
+.opt input:focus-visible + .bub{outline:3px solid var(--accent);outline-offset:2px}
+.otext{min-width:0}
+.graded .opt{cursor:default}
+.graded .opt:hover{border-color:var(--line)}
+.q .opt.correct{background:var(--ok-soft);border-color:var(--ok)}
+.opt.correct .bub{border-color:var(--ok);color:var(--ok)}
+.q .opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.correct input:checked + .bub{background:var(--ok);border-color:var(--ok);color:var(--paper)}
+.opt.wrong input:checked + .bub{background:var(--bad);border-color:var(--bad);color:var(--paper)}
+.exp{margin-top:12px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px}
+.exp .ans{font-weight:700;color:var(--ok)}
+.exp p{margin:.3em 0 0}
+.exp .trapnote{color:var(--mark)}
+.exp .topic{margin-top:8px;font-size:13px;color:var(--muted)}
+
+/* answer card */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px}
+@media (min-width:1040px){.card{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}}
+.card h2{font-family:var(--f-display);font-size:16px;margin:0 0 4px}
+.card .note{margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.cell{aspect-ratio:1;max-width:100%;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--muted);font-family:var(--f-mono);font-size:11px;padding:0;display:grid;place-items:center}
+.cell.done{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.cell.ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.cell.bad{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.cell.skip{background:var(--warn-soft);color:var(--warn);border-color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;border:1px solid var(--line)}
+@media (max-width:1039px){.card{order:-1}}
+.foot{font-size:13px;color:var(--muted);padding-block:0 40px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header class="mast"><div class="wrap">
+  <div class="eyebrow">iPAS · AI 應用規劃師 · 初級</div>
+  <h1>考前必考 100 題模擬考</h1>
+  <p class="lede">依 114 年第 4 次與 115 年第 1～3 次公告試題的考點出現頻率，挑出最常考的觀念編寫。直接點選答案，交卷後自動計分，並顯示每題的正解、詳解與歷屆出處。</p>
+  <div class="facts">
+    <span>科目一 人工智慧基礎概論 <b>50</b> 題</span>
+    <span>科目二 生成式 AI 應用與規劃 <b>50</b> 題</span>
+    <span>每題 <b>2</b> 分，單科滿分 <b>100</b></span>
+    <span>建議作答 <b>75</b> 分鐘／科</span>
+  </div>
+</div></header>
+
+<div class="bar"><div class="wrap">
+  <div class="tabs" role="tablist" aria-label="選擇科目">
+    <button class="tab" role="tab" id="tab-s1" data-s="s1">科目一<small id="tabc-s1"></small></button>
+    <button class="tab" role="tab" id="tab-s2" data-s="s2">科目二<small id="tabc-s2"></small></button>
+  </div>
+  <div class="prog"><div class="track"><div class="fill" id="fill"></div></div><span id="progtxt">0 / 50</span></div>
+  <button class="btn primary" id="submit">交卷</button>
+  <button class="btn" id="reset">重新作答</button>
+</div></div>
+<div class="confirm" id="confirm" hidden><div class="wrap">
+  <p id="confirm-msg"></p>
+  <button class="btn primary" id="confirm-yes"></button>
+  <button class="btn" id="confirm-no">取消</button>
+</div></div>
+
+<main class="wrap main">
+  <div class="col">
+    <section class="result" id="result" hidden aria-live="polite"></section>
+    <div id="qs" class="col"></div>
+  </div>
+  <aside class="card" aria-label="答案卡">
+    <h2>答案卡</h2>
+    <p class="note" id="card-note">點題號可跳到該題。</p>
+    <div class="grid" id="grid"></div>
+    <div class="legend" id="legend"></div>
+  </aside>
+</main>
+<footer class="wrap foot">
+  題目、答案與詳解由 AI（Claude）依歷屆公告試題的考點編寫，非官方試題；「歷屆出處」為同考點或同大類的題號，供複習參考。實際考試範圍、合格標準請以 iPAS 官方最新簡章為準。作答紀錄只存在你目前使用的瀏覽器中。
+</footer>
+
+<script>
+const DATA = /*DATA*/;
+const LET = ['A','B','C','D'];
+const KEY = 'ipas-pred100-v1';
+let st = {cur:'s1', s1:{ans:{}, graded:false, filter:'all'}, s2:{ans:{}, graded:false, filter:'all'}};
+try { const raw = localStorage.getItem(KEY); if (raw) { const v = JSON.parse(raw); ['s1','s2'].forEach(s => { if (v[s]) st[s] = Object.assign(st[s], v[s]); }); } } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify({s1:st.s1, s2:st.s2})); } catch(e) {} }
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function status(s, q){ const a = st[s].ans[q.n]; if (!a) return 'skip'; return a === q.a ? 'ok' : 'bad'; }
+
+function expHTML(e){
+  const i = e.indexOf('陷阱：');
+  if (i < 0) return '<p>' + esc(e) + '</p>';
+  return '<p>' + esc(e.slice(0, i)) + '<span class="trapnote">' + esc(e.slice(i)) + '</span></p>';
+}
+
+function renderQs(){
+  const s = st.cur, S = st[s], qs = DATA[s];
+  const box = $('qs'); box.innerHTML = '';
+  qs.forEach(q => {
+    const res = S.graded ? status(s, q) : null;
+    if (S.graded && S.filter !== 'all') {
+      if (S.filter === 'bad' && res !== 'bad') return;
+      if (S.filter === 'skip' && res !== 'skip') return;
+      if (S.filter === 'trap' && !q.t.includes('陷阱')) return;
+    }
+    const art = document.createElement('article');
+    art.className = 'q' + (S.graded ? ' graded is-' + res : '');
+    art.id = s + '-q' + q.n;
+    const tags = q.t.filter(t => t !== '一般').map(t => '<span class="tag' + (t === '陷阱' ? ' trap' : '') + '">' + t + '題</span>').join('');
+    const verdict = S.graded ? '<span class="verdict ' + res + '">' + ({ok:'答對', bad:'答錯', skip:'未作答'})[res] + '</span>' : '';
+    let opts = '';
+    q.o.forEach((o, i) => {
+      const L = LET[i], chosen = S.ans[q.n] === L;
+      let cls = 'opt';
+      if (S.graded) { if (L === q.a) cls += ' correct'; else if (chosen) cls += ' wrong'; }
+      opts += '<label class="' + cls + '"><input type="radio" name="' + s + '-' + q.n + '" id="' + s + '-' + q.n + '-' + L + '" value="' + L + '"' + (chosen ? ' checked' : '') + (S.graded ? ' disabled' : '') + '><span class="bub">' + L + '</span><span class="otext">' + esc(o) + '</span></label>';
+    });
+    let exp = '';
+    if (S.graded) exp = '<div class="exp"><span class="ans">正解 (' + q.a + ')</span>' + (S.ans[q.n] && S.ans[q.n] !== q.a ? '　你選 (' + S.ans[q.n] + ')' : '') + expHTML(q.e) + '<div class="topic">歷屆出處｜' + esc(q.k) + '</div></div>';
+    art.innerHTML = '<div class="qhead"><span class="qno">第 ' + q.n + ' 題</span>' + tags + verdict + '</div><p class="stem">' + esc(q.q) + '</p><fieldset class="opts"><legend class="sr" hidden>選項</legend>' + opts + '</fieldset>' + exp;
+    box.appendChild(art);
+  });
+  if (!box.children.length) box.innerHTML = '<p class="note">這個篩選條件下沒有題目。</p>';
+}
+
+function renderResult(){
+  const s = st.cur, S = st[s], qs = DATA[s], r = $('result');
+  if (!S.graded) { r.hidden = true; return; }
+  let ok = 0, bad = 0, skip = 0, sc = {t:0, c:0}, tp = {t:0, c:0};
+  qs.forEach(q => { const x = status(s, q); if (x === 'ok') ok++; else if (x === 'bad') bad++; else skip++;
+    if (q.t.includes('情境')) { sc.t++; if (x === 'ok') sc.c++; }
+    if (q.t.includes('陷阱')) { tp.t++; if (x === 'ok') tp.c++; } });
+  const pct = (a) => a.t ? Math.round(a.c / a.t * 100) + '%' : '—';
+  const f = S.filter, chip = (k, label) => '<button class="chip" data-f="' + k + '" aria-pressed="' + (f === k) + '">' + label + '</button>';
+  r.innerHTML = '<div class="score-row"><div class="score">' + (ok * 2) + '<small>/ 100 分</small></div>' +
+    '<div class="stats"><span>答對 <b>' + ok + '</b> 題</span><span>答錯 <b>' + bad + '</b> 題</span><span>未作答 <b>' + skip + '</b> 題</span></div></div>' +
+    '<div class="breakdown"><div class="bd">情境題正確率<b>' + pct(sc) + '</b>' + sc.c + ' / ' + sc.t + ' 題</div><div class="bd">陷阱題正確率<b>' + pct(tp) + '</b>' + tp.c + ' / ' + tp.t + ' 題</div></div>' +
+    '<div class="filters" role="group" aria-label="篩選題目">' + chip('all', '全部 50 題') + chip('bad', '只看答錯 ' + bad) + chip('skip', '只看未作答 ' + skip) + chip('trap', '只看陷阱題') + '</div>' +
+    '<p class="note">合格標準請以 iPAS 官方最新簡章為準。按「重新作答」可清除本科答案再考一次。</p>';
+  r.hidden = false;
+  r.querySelectorAll('.chip').forEach(b => b.onclick = () => { S.filter = b.dataset.f; save(); renderResult(); renderQs(); });
+}
+
+function renderCard(){
+  const s = st.cur, S = st[s], g = $('grid'); g.innerHTML = '';
+  DATA[s].forEach(q => {
+    const b = document.createElement('button');
+    let c = 'cell';
+    if (S.graded) c += ' ' + status(s, q); else if (S.ans[q.n]) c += ' done';
+    b.className = c; b.textContent = q.n; b.setAttribute('aria-label', '第 ' + q.n + ' 題');
+    b.onclick = () => { if (S.graded && S.filter !== 'all') { S.filter = 'all'; renderResult(); renderQs(); } const el = $(s + '-q' + q.n); if (el) el.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'}); };
+    g.appendChild(b);
+  });
+  $('legend').innerHTML = S.graded
+    ? '<span><i style="background:var(--ok-soft);border-color:var(--ok)"></i>答對</span><span><i style="background:var(--bad-soft);border-color:var(--bad)"></i>答錯</span><span><i style="background:var(--warn-soft);border-color:var(--warn)"></i>未作答</span>'
+    : '<span><i style="background:var(--accent-soft);border-color:var(--accent)"></i>已作答</span><span><i></i>未作答</span>';
+}
+
+function renderBar(){
+  const s = st.cur, S = st[s], n = Object.keys(S.ans).length;
+  $('fill').style.width = (n / 50 * 100) + '%';
+  $('progtxt').textContent = S.graded ? '已交卷　' + n + ' / 50' : '已作答 ' + n + ' / 50';
+  $('submit').disabled = S.graded;
+  ['s1','s2'].forEach(k => {
+    const t = $('tab-' + k); t.setAttribute('aria-selected', String(k === s));
+    $('tabc-' + k).textContent = st[k].graded ? DATA[k].filter(q => st[k].ans[q.n] === q.a).length * 2 + ' 分' : Object.keys(st[k].ans).length + '/50';
+  });
+}
+
+function renderAll(){ renderBar(); renderResult(); renderQs(); renderCard(); hideConfirm(); }
+
+let pending = null;
+function ask(msg, yes, fn){ $('confirm-msg').textContent = msg; $('confirm-yes').textContent = yes; pending = fn; $('confirm').hidden = false; }
+function hideConfirm(){ $('confirm').hidden = true; pending = null; }
+$('confirm-yes').onclick = () => { const f = pending; hideConfirm(); if (f) f(); };
+$('confirm-no').onclick = hideConfirm;
+
+function grade(){ const S = st[st.cur]; S.graded = true; S.filter = 'all'; save(); renderAll(); window.scrollTo({top: $('result').getBoundingClientRect().top + window.scrollY - 90}); }
+$('submit').onclick = () => {
+  const S = st[st.cur], left = 50 - Object.keys(S.ans).length;
+  if (left > 0) ask('還有 ' + left + ' 題未作答，未作答以 0 分計。確定要交卷嗎？', '確定交卷', grade);
+  else ask('50 題都已作答。確定要交卷嗎？交卷後就不能再修改答案。', '確定交卷', grade);
+};
+$('reset').onclick = () => ask('要清除' + (st.cur === 's1' ? '科目一' : '科目二') + '的所有答案，重新作答嗎？', '清除並重考', () => {
+  st[st.cur] = {ans:{}, graded:false, filter:'all'}; save(); renderAll(); window.scrollTo({top:0});
+});
+
+$('qs').addEventListener('change', e => {
+  const t = e.target; if (t.type !== 'radio') return;
+  const n = +t.name.split('-')[1]; const S = st[st.cur]; if (S.graded) return;
+  S.ans[n] = t.value; save(); renderBar(); renderCard();
+});
+
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => { location.hash = b.dataset.s; });
+function route(){ const h = location.hash.replace('#', ''); st.cur = (h === 's2') ? 's2' : 's1'; renderAll(); }
+window.addEventListener('hashchange', () => { route(); window.scrollTo({top:0}); });
+route();
+</script>
