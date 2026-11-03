@@ -174,7 +174,7 @@ h1{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,4.4vw,40px)
 <script>
 const DATA = /*DATA*/;
 const LET = ['A','B','C','D'];
-const KEY = 'ipas-pred100-v1';
+const KEY = 'ipas-pred100-v2';
 let st = {cur:'s1', s1:{ans:{}, graded:false, filter:'all'}, s2:{ans:{}, graded:false, filter:'all'}};
 try { const raw = localStorage.getItem(KEY); if (raw) { const v = JSON.parse(raw); ['s1','s2'].forEach(s => { if (v[s]) st[s] = Object.assign(st[s], v[s]); }); } } catch(e) {}
 function save(){ try { localStorage.setItem(KEY, JSON.stringify({s1:st.s1, s2:st.s2})); } catch(e) {} }
