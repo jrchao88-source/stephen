@@ -24,3 +24,11 @@ AI 自編模擬試題（非官方），逐題詳解版 PDF。
 - `pred_v3/draft_S*.txt`：原稿（正解一律寫在 A）；`pred_v3/build.py` 依預排答案序列重排選項，並把 `@sub:`／`@cat:` 換成參考檔中實際存在的題號；`pred_v3/edits/` 為選項長度與用語調整紀錄
 - `pred_v3/simcheck.py`：與官方歷屆、R1～R6、必考百題（含備份）、set3 的相似度比對；`pred_v3/kw.py`：用關鍵字查舊題是否已用過同一角度；`pred_v3/abscheck.py`：檢查絕對用語與「因為／所以」在正解與錯誤選項中的比例
 - `pred_v3/web/build_web.py`：產生 `pred_v3/web/data.json` 與 `pred_v3/web/ipas_pred_v3.html`（另補 `[hidden]{display:none}`，修正範本交卷前出現空白結果框的問題）
+
+## s1_two：科目一 情境陷阱百題（兩回，不含計算題）
+
+- `s1_two/R1.txt`、`s1_two/R2.txt`：科目一第一回、第二回各 50 題（可用 `parse_mock.validate()` 驗證）
+- `s1_two/draft_R*.txt`：原稿（正解一律寫在 A）；`s1_two/build.py` 依預排答案序列重排選項並換入 `@sub:`／`@cat:` 的實際題號
+- `s1_two/edits/`：替換題目（`merge.py`）、選項（`optedit.py`）與字串（`subedit.py`）的紀錄，用於避開舊題角度、調整正解長度與用語
+- `s1_two/simcheck.py`：與官方 400 題、R1～R6、必考百題（含兩個備份）、set3、pred_v3 及兩回互比的相似度；`s1_two/near.py`：列出概念最接近的舊題，人工檢查切入角度；`s1_two/lenrank.py`、`s1_two/cues.py`：正解長度排名與絕對用語、「因為／所以」檢查
+- `s1_two/web/build_web.py`：產生 `s1_two/web/data.json` 與 `s1_two/web/ipas_s1_two.html`（分頁為第一回、第二回）
